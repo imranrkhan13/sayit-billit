@@ -6,7 +6,7 @@ A typed TypeScript library and small review app for freelancers and shop owners.
 Select a value to highlight its receipt evidence; correct it or explicitly confirm
 it is unknown, then export original predictions plus a separate human audit trail.
 
-Public app: deployment URL is recorded in `docs/DELIVERY.md`.
+Public app: https://sayit-billit.vercel.app (Vercel Hobby).
 Source: https://github.com/imranrkhan13/sayit-billit
 
 ## What shipped
