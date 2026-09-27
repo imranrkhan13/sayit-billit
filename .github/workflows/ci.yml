@@ -1,0 +1,21 @@
+name: Offline verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run reproduce
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-and-site
+          path: |
+            data/eval/report.json
+            dist

@@ -1,0 +1,6 @@
+.private
+.env*
+.git
+node_modules
+data/predictions
+tests

@@ -1,0 +1,236 @@
+[
+  {
+    "id": "dev-01",
+    "split": "dev",
+    "condition": "clean",
+    "file": "images/dev-01.png",
+    "sha256": "602c7fa03b461c0d1697b82ff046a5053195676bcd6389038dcf12e3ff64094f",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "PAPER & PINE",
+      "date": "2026-08-01",
+      "currency": "USD",
+      "items": [
+        {
+          "name": "Notebook",
+          "price": "8.00"
+        },
+        {
+          "name": "Pens",
+          "price": "4.00"
+        }
+      ],
+      "tax": "1.20",
+      "total": "13.20"
+    }
+  },
+  {
+    "id": "dev-02",
+    "split": "dev",
+    "condition": "faded",
+    "file": "images/dev-02.png",
+    "sha256": "3023014aab76560c3449397e49a1dc8c9947f960420b15845d9c58389fe79774",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "CEDAR COFFEE",
+      "date": "2026-08-03",
+      "currency": "GBP",
+      "items": [
+        {
+          "name": "Coffee",
+          "price": "3.50"
+        },
+        {
+          "name": "Cake",
+          "price": "4.00"
+        }
+      ],
+      "tax": "0.75",
+      "total": "8.25"
+    }
+  },
+  {
+    "id": "dev-03",
+    "split": "dev",
+    "condition": "rotated",
+    "file": "images/dev-03.png",
+    "sha256": "211b41a5e87ed14bed9f8d984fea789b05f0c9dfc3f938d3d3611b032b0fc74f",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "NORTH HARDWARE",
+      "date": "2026-08-05",
+      "currency": "EUR",
+      "items": [
+        {
+          "name": "Nails",
+          "price": "5.00"
+        },
+        {
+          "name": "Tape",
+          "price": "2.00"
+        }
+      ],
+      "tax": "1.40",
+      "total": "8.40"
+    }
+  },
+  {
+    "id": "test-01",
+    "split": "held-out",
+    "condition": "clean",
+    "file": "images/test-01.png",
+    "sha256": "31474c65a2995d6a9c76e77ddf74ae00040d5125016a77a21f96beccb8dbef85",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "MAPLE PRINT",
+      "date": "2026-09-01",
+      "currency": "USD",
+      "items": [
+        {
+          "name": "Copies",
+          "price": "12.00"
+        },
+        {
+          "name": "Binding",
+          "price": "6.00"
+        }
+      ],
+      "tax": "1.80",
+      "total": "19.80"
+    }
+  },
+  {
+    "id": "test-02",
+    "split": "held-out",
+    "condition": "faded",
+    "file": "images/test-02.png",
+    "sha256": "f1f4fd9e7ceef2cf551bfa2b4839bf96eeb0f24074979658783c9c7d7771567b",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "RIVER SUPPLIES",
+      "date": "2026-09-02",
+      "currency": "INR",
+      "items": [
+        {
+          "name": "Paper",
+          "price": "180.00"
+        },
+        {
+          "name": "Clips",
+          "price": "40.00"
+        }
+      ],
+      "tax": "11.00",
+      "total": "231.00"
+    }
+  },
+  {
+    "id": "test-03",
+    "split": "held-out",
+    "condition": "rotated",
+    "file": "images/test-03.png",
+    "sha256": "e23744a4b1614ce50069721a7e7d778305bdbfcb6f93263f00e8b50fdbf03701",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "SMALL BATCH",
+      "date": "2026-09-03",
+      "currency": "EUR",
+      "items": [
+        {
+          "name": "Flour",
+          "price": "6.00"
+        },
+        {
+          "name": "Oil",
+          "price": "8.00"
+        }
+      ],
+      "tax": "0.70",
+      "total": "14.70"
+    }
+  },
+  {
+    "id": "test-04",
+    "split": "held-out",
+    "condition": "ambiguous",
+    "file": "images/test-04.png",
+    "sha256": "1e1743304d28442997ddec1fe968ef37048dd625db7125b010b2b32a050d2bb5",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "CORNER TOOLS",
+      "date": null,
+      "currency": null,
+      "items": [
+        {
+          "name": "Brush",
+          "price": "9.00"
+        },
+        {
+          "name": "Tray",
+          "price": "5.00"
+        }
+      ],
+      "tax": null,
+      "total": "14.00"
+    }
+  },
+  {
+    "id": "test-05",
+    "split": "held-out",
+    "condition": "alternate-total",
+    "file": "images/test-05.png",
+    "sha256": "64cc836946788e317185c1c9a1802e202693e985aedb7242fd199f8178cae869",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "STUDIO MARKET",
+      "date": "2026-09-06",
+      "currency": "GBP",
+      "items": [
+        {
+          "name": "Ink",
+          "price": "15.00"
+        },
+        {
+          "name": "Card",
+          "price": "7.00"
+        }
+      ],
+      "tax": "2.20",
+      "total": "24.20"
+    }
+  },
+  {
+    "id": "test-06",
+    "split": "held-out",
+    "condition": "creased",
+    "file": "images/test-06.png",
+    "sha256": "fe50a359ddfcb2e45c71a2315c57755d4784869fb433352b7d3e5d2ba29892cd",
+    "source": "Original fictional receipt authored for SayIt BillIt; scripts/make_data.py",
+    "license": "CC0-1.0",
+    "labels": {
+      "merchant": "MOSS GROCER",
+      "date": "2026-09-08",
+      "currency": "USD",
+      "items": [
+        {
+          "name": "Tea",
+          "price": "4.50"
+        },
+        {
+          "name": "Oats",
+          "price": "3.00"
+        }
+      ],
+      "tax": "0.60",
+      "total": "8.10"
+    }
+  }
+]
