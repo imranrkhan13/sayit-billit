@@ -21,7 +21,7 @@ export const COMPLETE=`local b=redis.call('GET',KEYS[1]);if not b then return 0 
 export class HostedClient{
  constructor(private env:Env,private store:RedisStore,private transport:typeof fetch=fetch){}
  async call(inputHash:string,stage:string,body:object){const price=reservation(body);const key=`sib:v1:ocr:${inputHash}:${stage}`,budget='sib:v1:approved-budget';
- if(this.env.OCR_ENABLED!=='true'||!this.env.INTERFAZE_API_KEY)throw Error('Interfaze OCR is locked. No provider call made.');
+ if(this.env.OCR_ENABLED!=='true'||!this.env.INTERFAZE_API_KEY){const value=await this.store.command('GET',key);if(!value)throw Error('Interfaze OCR is locked. No provider call made.');const cached=JSON.parse(value);if(cached.error)throw Error(cached.error);return {...cached,cacheHit:true};}
  const state=await this.store.eval(RESERVE,[budget,key],[Math.ceil(price.reserveUsd*1e9)]);
  if(state[0]==='cached'){const cached=JSON.parse(state[1]);if(cached.error)throw Error(cached.error);return {...cached,cacheHit:true};}
  if(state[0]!=='reserved')throw Error(state[1]??'No approved budget');
