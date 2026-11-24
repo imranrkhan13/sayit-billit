@@ -1,6 +1,6 @@
-import {CachedClient,hash} from './client';
-import {ocrEvidence,ground} from './record';
-import {rules} from './baseline';
+import {CachedClient,hash} from './client.js';
+import {ocrEvidence,ground} from './record.js';
+import {rules} from './baseline.js';
 /** Real Interfaze OCR task. Never falls back to another OCR engine. */
 export async function extractInterfazeOCR(bytes:Uint8Array,mime:string,client:Pick<CachedClient,'call'>){
  if(!['image/png','image/jpeg'].includes(mime)||bytes.length>3000000)throw Error('INVALID_IMAGE: use PNG/JPEG up to 3 MB');
