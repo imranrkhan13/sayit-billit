@@ -2,11 +2,11 @@
 
 The hosted API now prepares the documented Interfaze `task=ocr` path, not a relabeled structured completion. It is **disabled by default**. Public visitors retain browser OCR. Owner-only access requires a server-side password, signed 30-minute HttpOnly cookie, same-origin POST and durable rate limiting. Hosted uploads are PNG/JPEG up to 3 MB. Expense fields use small local rules over the provider's OCR lines; every field requires review.
 
-A separate free Upstash database holds atomic reservations, image-hash cache and no-retry tombstones. Eviction must stay off. A missing budget or storage failure blocks inference, never initializes a new allowance. Budget reservations are never refunded automatically; uncertain requests halt the ledger. No automatic retries, paid fallback, or public access to credits. Raw OCR text is stored privately; uploaded image bytes are forwarded to Interfaze, not stored by this app. Review history remains page-local until exported.
+A separate free Upstash database holds atomic reservations, image-hash cache and no-retry tombstones. Eviction must stay off. A missing budget or storage failure blocks inference, never initializes a new allowance. Dedicated OCR reserves128,000 input+32,768 output tokens ($0.157952 at documented Lite rates), even when requesting a smaller output. Budget reservations are never refunded automatically; uncertain requests halt the ledger. No automatic retries, paid fallback, or public access to credits. Raw OCR text is stored privately; uploaded image bytes are forwarded to Interfaze, not stored by this app. Review history remains page-local until exported.
 
 Deployment alone does not enable spending. `OCR_ENABLED` must remain unset/false until the owner separately approves a budget and live test. `OCR_OWNER_PASSWORD`, `INTERFAZE_API_KEY` and Redis credentials are server-only, never browser environment variables. The documented OCR task is covered by mocked transport tests, **not yet live-validated**. The earlier single successful provider test used structured extraction, not `task=ocr`. Existing baseline scores below are unchanged and are not Interfaze OCR benchmark results.
 
-18 offline tests currently pass. Historical implementation notes below describe earlier stages and do not override this section.
+19 offline tests currently pass. Historical implementation notes below describe earlier stages and do not override this section.
 
 ## Repair, November 24, 2026
 
