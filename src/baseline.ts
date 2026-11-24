@@ -1,4 +1,4 @@
-import {type Candidate,type Evidence,type RawRecord} from './record';
+import {type Candidate,type Evidence,type RawRecord} from './record.js';
 // Deliberately small rules, frozen before inspecting held-out predictions.
 export function rules(lines:Evidence[]):RawRecord{
  const empty=():Candidate=>({value:null,quote:null,confidence:0});
