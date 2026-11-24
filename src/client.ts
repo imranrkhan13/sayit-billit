@@ -3,11 +3,19 @@ import {mkdir,readFile,writeFile,rename,open} from 'node:fs/promises';
 import {join} from 'node:path';
 import {z} from 'zod';
 export const hash=(b:Uint8Array|string)=>createHash('sha256').update(b).digest('hex');
-const reserveTokens=1_032_000,reserveUsd=1.612;
+export function reservation(body:any){
+ const lite=body.model==='interfaze-1.1-lite';
+ if(!lite&&body.model!=='interfaze-1')throw new Error('UNSUPPORTED_MODEL: select a documented direct Interfaze model');
+ const output=body.max_tokens??4096;
+ if(!Number.isInteger(output)||output<1||output>4096)throw new Error('OUTPUT_CAP: maximum 4096');
+ const input=lite?128000:1000000;
+ return {reserveTokens:input+output,reserveUsd:(input*(lite?.85:1.5)+output*(lite?1.5:3.5))/1e6,inputPrice:lite?.85:1.5,outputPrice:lite?1.5:3.5};
+}
 export type Config={directory:string;key:string;freeConfirmed:boolean;tokenCap:number;creditCap:number;gateway?:boolean};
 export class CachedClient {
  constructor(private config:Config,private transport:typeof fetch=fetch){}
  async call(inputHash:string,stage:string,body:object):Promise<{raw:any;latencyMs:number;tokens:number;usd:number;cacheHit:boolean}>{
+  const {reserveTokens,reserveUsd,inputPrice,outputPrice}=reservation(body);
   const c=this.config;await mkdir(c.directory,{recursive:true,mode:0o700});
   // Key is input+stage only: schema/prompt changes never silently spend again.
   const path=join(c.directory,hash(inputHash+':'+stage)+'.json');
@@ -32,7 +40,7 @@ export class CachedClient {
     if(!response.ok)throw new Error(`HTTP_${response.status}: provider rejected ${stage}; raw response saved privately`);
     const raw=JSON.parse(responseText);
     const usage=z.object({prompt_tokens:z.number().int().nonnegative(),completion_tokens:z.number().int().nonnegative()}).parse(raw.usage);
-    const tokens=usage.prompt_tokens+usage.completion_tokens,usd=(usage.prompt_tokens*1.5+usage.completion_tokens*3.5)/1e6;
+    const tokens=usage.prompt_tokens+usage.completion_tokens,usd=(usage.prompt_tokens*inputPrice+usage.completion_tokens*outputPrice)/1e6;
     const result={raw,latencyMs:performance.now()-started,tokens,usd,cacheHit:false,requestHash:hash(JSON.stringify(body)),inputHash,stage};
     await writeFile(path+'.tmp',JSON.stringify(result,null,2),{mode:0o600});await rename(path+'.tmp',path);
     await writeFile(ledgerPath,JSON.stringify({tokens:ledger.tokens+tokens,usd:ledger.usd+usd,halted:tokens>reserveTokens||usd>reserveUsd}));
