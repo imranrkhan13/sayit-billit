@@ -1,5 +1,5 @@
 import {createHmac,randomBytes,timingSafeEqual} from 'node:crypto';
-import {reservation} from './client';
+import {reservation} from './client.js';
 export type Env=Record<string,string|undefined>;
 export const digest=(value:string,key:string)=>createHmac('sha256',key).update(value).digest('hex');
 export function equal(a:string,b:string){const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&timingSafeEqual(x,y);}
