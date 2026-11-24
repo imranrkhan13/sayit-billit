@@ -5,7 +5,7 @@ export const config={maxDuration:300};
 export default async function handler(req:IncomingMessage & {body?:unknown},res:ServerResponse){
  const env=process.env,password=env.OCR_OWNER_PASSWORD??'';const reply=(status:number,data:object)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));};
  const url=new URL(req.url??'/api/ocr','https://sayit-billit.vercel.app');
- if(req.method==='GET'){const auth=password.length>=20&&authorized(req.headers.cookie??'',password);if(url.searchParams.get('action')==='test-ledger'){if(!auth){reply(401,{error:'Owner sign-in required'});return;}try{const store=new RedisStore(env);reply(200,{budget:await store.command('GET','sib:v1:approved-budget'),approval:await store.command('GET','sib:v1:approval:2026-11-24-155445'),cached:await store.command('GET','sib:v1:ocr:602c7fa03b461c0d1697b82ff046a5053195676bcd6389038dcf12e3ff64094f:ocr.expense.v1')});}catch{reply(503,{error:'Ledger unavailable'});}return;}reply(200,{authenticated:auth,enabled:env.OCR_ENABLED==='true'});return;}
+ if(req.method==='GET'){reply(200,{authenticated:password.length>=20&&authorized(req.headers.cookie??'',password),enabled:env.OCR_ENABLED==='true'});return;}
  if(req.method!=='POST'){reply(405,{error:'Method not allowed'});return;}
  if(req.headers.origin!=='https://sayit-billit.vercel.app'||req.headers['x-sib-request']!=='1'){reply(403,{error:'Same-origin requests only'});return;}
  if(password.length<20){reply(503,{error:'Owner access not configured. No provider call made.'});return;}
@@ -21,7 +21,6 @@ export default async function handler(req:IncomingMessage & {body?:unknown},res:
  }
  if(!authorized(req.headers.cookie??'',password)){reply(401,{error:'Owner sign-in required. No provider call made.'});return;}
  if(url.searchParams.get('action')==='lock'){await store.eval("local b=redis.call('GET',KEYS[1]);if b then local x=cjson.decode(b);x.halted=true;x.remainingCalls=0;redis.call('SET',KEYS[1],cjson.encode(x));end;return 1",['sib:v1:approved-budget']);reply(200,{locked:true});return;}
- if(url.searchParams.get('action')==='arm-test'){if(env.OCR_APPROVED_TEST_ID!=='2026-11-24-155445'){reply(403,{error:'No approved one-time test'});return;}const n=await store.eval("if redis.call('EXISTS',KEYS[1])==1 or redis.call('EXISTS',KEYS[2])==1 then return 0 end;redis.call('SET',KEYS[1],'consumed');redis.call('SET',KEYS[2],ARGV[1]);return 1",['sib:v1:approval:2026-11-24-155445','sib:v1:approved-budget'],[JSON.stringify({remainingCalls:1,remainingNano:200000000,halted:false})]);reply(n===1?200:409,{armed:n===1,note:'Exactly one request. Cannot reset this approval.'});return;}
  if(url.searchParams.get('action')==='check-reservations'){reply(200,await checkReservations(store));return;}
  let size=0;const chunks:Buffer[]=[];for await(const chunk of req){size+=chunk.length;if(size>3000000)throw Error('Use PNG/JPEG up to 3 MB');chunks.push(Buffer.from(chunk));}
  if(Buffer.isBuffer(req.body)){chunks.push(req.body);size+=req.body.length;}else if(typeof req.body==='string'){const b=Buffer.from(req.body);chunks.push(b);size+=b.length;}if(size>3000000)throw Error('Use PNG/JPEG up to 3 MB');const bytes=Buffer.concat(chunks),mime=req.headers['content-type']??'';
