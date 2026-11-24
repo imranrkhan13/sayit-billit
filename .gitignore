@@ -7,3 +7,6 @@ dist/
 *.traineddata
 .DS_Store
 .vercel
+
+public/ocr/
+ui-test.mjs

@@ -5,8 +5,9 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "serve:private": "tsx scripts/serve.ts",
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/prepare-ocr.mjs && tsc --noEmit && vite build",
     "test": "tsx --test tests/*.test.ts",
     "reproduce": "npm run test && tsx scripts/evaluate.ts && npm run build",
     "baseline": "tsx scripts/baseline.ts",
