@@ -1,3 +1,32 @@
+## Repair, November 24, 2026
+
+This is **SayIt BillIt**, an expense/receipt review pilot. It is not a separate
+"Interfaze Verify" audit-claim mapping product. Do not describe local Tesseract
+inference as Interfaze or claim certificate/procedure support.
+
+- PNG/JPEG uploads (10 MB, 16 megapixels max) now run genuine Tesseract OCR in the
+  browser, using self-hosted worker/WASM/language assets. Images never upload in
+  this mode. Every newly extracted field requires review. Coordinates use actual
+  image dimensions instead of the old fixed 640 x 650 frame.
+- Human corrections and unknown confirmations have timestamped before/after history.
+  History remains in this page session and can be exported, not durable storage.
+- A real **private localhost** Interfaze upload/review path is available with
+  `npm run build && npm run serve:private`. It binds to 127.0.0.1:4174 only, refuses
+  cross-origin requests, stores secrets only in the server environment and uses
+  a persistent reservation/usage ledger. Choose Interfaze in the private runner's
+  Engine control. This path consumes credits and requires explicit approval.
+- The public Vercel site has no owner-funded inference endpoint. It can import
+  a private-run Interfaze bundle with its exact matching image (SHA-256 checked).
+  A bundle is not cryptographically authenticated just because it says Interfaze.
+- Provider model is now documented `interfaze-1.1-lite`. Conservative reservation:
+  128,000 input + 4,096 output tokens, $0.114944 per request at current documented
+  rates. Unknown usage/failures halt future calls. No retry or paid fallback.
+- `npm run build` downloads public English OCR assets, about 10 MB for language data
+  plus worker/core assets. Tests never call Interfaze. Public offline baseline
+  scores below are unchanged, not a benchmark of the repaired uploaded-image flow.
+
+## Original pilot documentation (historical September snapshot)
+
 # SayIt BillIt
 
 **Evidence-first expenses. An honest, incomplete pilot—not production bookkeeping software.**
