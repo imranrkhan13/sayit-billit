@@ -1,6 +1,6 @@
 import type {IncomingMessage,ServerResponse} from 'node:http';
-import {authorized,equal,session,digest,RedisStore,HostedClient} from '../src/hosted';
-import {extractInterfazeOCR} from '../src/interfaze-ocr';
+import {authorized,equal,session,digest,RedisStore,HostedClient} from '../src/hosted.js';
+import {extractInterfazeOCR} from '../src/interfaze-ocr.js';
 export const config={maxDuration:300};
 export default async function handler(req:IncomingMessage & {body?:unknown},res:ServerResponse){
  const env=process.env,password=env.OCR_OWNER_PASSWORD??'';const reply=(status:number,data:object)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));};
