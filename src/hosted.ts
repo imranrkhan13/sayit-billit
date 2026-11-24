@@ -37,3 +37,16 @@ export class HostedClient{
  return result;
  }
 }
+
+export async function checkReservations(store:RedisStore){
+ const prefix=`sib:test:${randomBytes(16).toString('hex')}`;
+ const script=`local KEYS={ARGV[1]..':budget',ARGV[1]..':image'};local ARGV={'157952000'};
+ local function reserve() ${RESERVE} end;
+ local absent=reserve();redis.call('SET',KEYS[1],cjson.encode({remainingCalls=1,remainingNano=157952000,halted=false}));
+ local first=reserve();local repeated=reserve();local x=cjson.decode(redis.call('GET',KEYS[1]));
+ redis.call('DEL',KEYS[2]);local halted=reserve();x.halted=false;redis.call('SET',KEYS[1],cjson.encode(x));local exhausted=reserve();
+ redis.call('DEL',KEYS[1],KEYS[2]);return cjson.encode({absent=absent[1],first=first[1],repeated=repeated[1],halted=halted[1],exhausted=exhausted[1],remainingCalls=x.remainingCalls,remainingNano=x.remainingNano,cleanup=true})`;
+ const result=JSON.parse(await store.eval(script,[],[prefix]));
+ if(result.absent!=='blocked'||result.first!=='reserved'||result.repeated!=='cached'||result.halted!=='blocked'||result.exhausted!=='blocked'||result.remainingCalls!==0||result.remainingNano!==0||!result.cleanup)throw Error('Reservation check failed');
+ return {...result,providerCalls:0,productionBudgetChanged:false};
+}
