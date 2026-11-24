@@ -2,7 +2,7 @@ import {createServer} from 'node:http';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
 import {CachedClient} from '../src/client';
-import {extractInterfaze} from '../src/interfaze';
+import {extractInterfazeOCR as extractInterfaze} from '../src/interfaze-ocr';
 const port=Number(process.env.PORT??4174),host='127.0.0.1';
 const client=new CachedClient({directory:'.private/cache',key:process.env.INTERFAZE_API_KEY??'',freeConfirmed:process.env.FREE_CREDIT_CONFIRMED==='true',tokenCap:Number(process.env.TOKEN_CAP??0),creditCap:Number(process.env.CREDIT_CAP_USD??0)});
 const types:Record<string,string>={'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.wasm':'application/wasm','.gz':'application/gzip'};
