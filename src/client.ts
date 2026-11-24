@@ -9,7 +9,9 @@ export function reservation(body:any){
  const output=body.max_tokens??4096;
  if(!Number.isInteger(output)||output<1||output>4096)throw new Error('OUTPUT_CAP: maximum 4096');
  const input=lite?128000:1000000;
- return {reserveTokens:input+output,reserveUsd:(input*(lite?.85:1.5)+output*(lite?1.5:3.5))/1e6,inputPrice:lite?.85:1.5,outputPrice:lite?1.5:3.5};
+ // Fixed OCR task may not honor the custom completion ceiling. Reserve full documented Lite output.
+ const reservedOutput=lite&&(body.task==='ocr')?32768:output;
+ return {reserveTokens:input+reservedOutput,reserveUsd:(input*(lite?.85:1.5)+reservedOutput*(lite?1.5:3.5))/1e6,inputPrice:lite?.85:1.5,outputPrice:lite?1.5:3.5};
 }
 export type Config={directory:string;key:string;freeConfirmed:boolean;tokenCap:number;creditCap:number;gateway?:boolean};
 export class CachedClient {
