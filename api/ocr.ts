@@ -5,7 +5,7 @@ export const config={maxDuration:300};
 export default async function handler(req:IncomingMessage & {body?:unknown},res:ServerResponse){
  const env=process.env,password=env.OCR_OWNER_PASSWORD??'';const reply=(status:number,data:object)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));};
  const url=new URL(req.url??'/api/ocr','https://sayit-billit.vercel.app');
- if(req.method==='GET'){reply(200,{authenticated:password.length>=20&&authorized(req.headers.cookie??'',password),enabled:env.OCR_ENABLED==='true'});return;}
+ if(req.method==='GET'){const auth=password.length>=20&&authorized(req.headers.cookie??'',password);if(url.searchParams.get('action')==='test-ledger'){if(!auth){reply(401,{error:'Owner sign-in required'});return;}try{const store=new RedisStore(env);reply(200,{budget:await store.command('GET','sib:v1:approved-budget'),approval:await store.command('GET','sib:v1:approval:2026-11-24-155445'),cached:await store.command('GET','sib:v1:ocr:602c7fa03b461c0d1697b82ff046a5053195676bcd6389038dcf12e3ff64094f:ocr.expense.v1')});}catch{reply(503,{error:'Ledger unavailable'});}return;}reply(200,{authenticated:auth,enabled:env.OCR_ENABLED==='true'});return;}
  if(req.method!=='POST'){reply(405,{error:'Method not allowed'});return;}
  if(req.headers.origin!=='https://sayit-billit.vercel.app'||req.headers['x-sib-request']!=='1'){reply(403,{error:'Same-origin requests only'});return;}
  if(password.length<20){reply(503,{error:'Owner access not configured. No provider call made.'});return;}
